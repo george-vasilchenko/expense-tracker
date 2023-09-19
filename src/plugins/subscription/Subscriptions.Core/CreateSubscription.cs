@@ -1,6 +1,6 @@
 ﻿namespace Subscriptions.Core;
 
-public static class CreateSubscription
+public class CreateSubscription
 {
     public class Handler
     {
@@ -10,9 +10,7 @@ public static class CreateSubscription
         }
     }
 
-    public class Command
-    {
-    }
+    public record Command(string Name, DateTime StartDateUtc, DateTime EndDateUtc);
 
     public class Endpoint
     {

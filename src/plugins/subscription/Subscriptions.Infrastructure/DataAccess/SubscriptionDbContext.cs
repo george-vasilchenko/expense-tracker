@@ -10,7 +10,7 @@ public class SubscriptionDbContext : DbContext
     {
     }
 
-    public DbSet<Subscription> Subscriptions { get; set; } = null!;
+    public DbSet<Subscription> Subscriptions { get; private set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -18,6 +18,16 @@ public class SubscriptionDbContext : DbContext
 
         ap.Property(o => o.Id)
             .HasConversion(id => id.Value, value => new SubscriptionId(value));
+
+        ap.OwnsOne(p => p.Period);
+
+        ap.Property(o => o.UnitPrice)
+            .HasConversion(
+                up => $"{up.WholePart}.{up.DecimalPart}",
+                value => Money.FromString(value));
+
+        ap.Property(o => o.Billing).HasConversion<int>();
+        
         ap.ToTable(nameof(Subscription));
 
         base.OnModelCreating(modelBuilder);
