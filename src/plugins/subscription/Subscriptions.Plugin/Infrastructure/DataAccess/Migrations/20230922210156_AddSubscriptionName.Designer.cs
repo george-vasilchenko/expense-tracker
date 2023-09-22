@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Subscriptions.Infrastructure.DataAccess;
+using Subscriptions.Plugin.Infrastructure.DataAccess;
 
 #nullable disable
 
-namespace Subscriptions.Infrastructure.DataAccess.Migrations
+namespace Subscriptions.Plugin.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(SubscriptionDbContext))]
-    partial class SubscriptionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230922210156_AddSubscriptionName")]
+    partial class AddSubscriptionName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,13 +25,17 @@ namespace Subscriptions.Infrastructure.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Subscriptions.Domain.Subscription", b =>
+            modelBuilder.Entity("Subscriptions.Plugin.Domain.Subscription", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Billing")
                         .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UnitPrice")
                         .IsRequired()
@@ -39,9 +46,9 @@ namespace Subscriptions.Infrastructure.DataAccess.Migrations
                     b.ToTable("Subscription", (string)null);
                 });
 
-            modelBuilder.Entity("Subscriptions.Domain.Subscription", b =>
+            modelBuilder.Entity("Subscriptions.Plugin.Domain.Subscription", b =>
                 {
-                    b.OwnsOne("Subscriptions.Domain.SubscriptionPeriod", "Period", b1 =>
+                    b.OwnsOne("Subscriptions.Plugin.Domain.SubscriptionPeriod", "Period", b1 =>
                         {
                             b1.Property<Guid>("SubscriptionId")
                                 .HasColumnType("uniqueidentifier");

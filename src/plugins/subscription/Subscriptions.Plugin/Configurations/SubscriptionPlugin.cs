@@ -1,19 +1,24 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Subscriptions.Core;
-using Subscriptions.Infrastructure.DataAccess;
+using Subscriptions.Plugin.Features;
+using Subscriptions.Plugin.Infrastructure.DataAccess;
+using WebApi.Plugin.Core;
 
-namespace Subscriptions.Plugin;
+namespace Subscriptions.Plugin.Configurations;
 
-public sealed class SubscriptionPlugin
+public static class SubscriptionPlugin
 {
     public static void AddServices(WebApplicationBuilder webApplicationBuilder, string connectionString)
     {
         if (webApplicationBuilder is null) throw new ArgumentNullException(nameof(webApplicationBuilder));
 
+        webApplicationBuilder.Services
+            .AddScoped<IDataContext, SubscriptionDbContext>()
+            .AddScoped<IHandler<CreateSubscriptionCommand, CreateSubscriptionResult>, CreateSubscriptionHandler>();
         webApplicationBuilder.Services
             .AddDbContext<SubscriptionDbContext>(o => o.UseSqlServer(connectionString));
     }
@@ -26,14 +31,13 @@ public sealed class SubscriptionPlugin
         InitializeDatabase(webApplication);
     }
 
-    private static void AddEndpoints(WebApplication webApplication)
+    private static void AddEndpoints(IEndpointRouteBuilder webApplication)
     {
-        var createSubscription = new CreateSubscription.Endpoint();
         webApplication
             .MapGroup("subscription")
             .MapGroup("v1")
-            .WithTags("subscription")
-            .MapPost(createSubscription.Pattern, createSubscription.Post);
+            .WithTags("Subscriptions")
+            .MapPost(CreateSubscriptionEndpoint.Pattern, CreateSubscriptionEndpoint.Post);
     }
 
     private static void InitializeDatabase(IHost webApp)

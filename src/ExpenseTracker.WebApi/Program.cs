@@ -1,4 +1,4 @@
-using Subscriptions.Plugin;
+using Subscriptions.Plugin.Configurations;
 
 namespace ExpenseTracker.WebApi;
 

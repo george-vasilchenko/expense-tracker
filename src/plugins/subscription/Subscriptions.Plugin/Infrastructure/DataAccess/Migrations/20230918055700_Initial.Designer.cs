@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Subscriptions.Infrastructure.DataAccess;
+using Subscriptions.Plugin.Infrastructure.DataAccess;
 
 #nullable disable
 

@@ -1,4 +1,4 @@
-﻿namespace Subscriptions.Domain;
+﻿namespace Subscriptions.Plugin.Domain;
 
 public readonly struct Money
 {
