@@ -66,4 +66,4 @@ stages:
               WebAppName: 'expense-tracker-webapi'
               packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
               RuntimeStack: 'DOTNETCORE|7.0'
-              AppSettings: '-SUBSCRIPTIONS_DB_CONTEXT_CONNECTION_STRING "Server=tcp:gp-sqlserver.database.windows.net,1433;Initial Catalog=ExpenseTracker.Subscription;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";"'
+              AppSettings: '-SUBSCRIPTIONS_DB_CONTEXT_CONNECTION_STRING "Server=tcp:gp-sqlserver.database.windows.net,1433;Initial Catalog=ExpenseTracker.Subscription;Persist Security Info=False;User ID=gp-admin;Password=QWEasd123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"'
