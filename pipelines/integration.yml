@@ -1,13 +1,61 @@
 trigger:
   - none
+variables:
+- name: buildConfiguration
+  value: Release
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'Source Line(f2e5a83a-99f6-434f-917a-28f6dd1a24c9)'
-    scriptType: 'ps'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az deployment sub create --template-file ./pipelines/resource-group.bicep --parameters name=et-default-rg location=westeurope'
+stages:
+- stage: artifacts
+  displayName: Artifacts
+  jobs:
+  - job: buildBackend
+    displayName: Build backend
+    steps:
+    - task: UseDotNet@2
+      displayName: Install dotnet 
+      inputs:
+        packageType: 'sdk'
+        useGlobalJson: true
+        workingDirectory: '$(Build.SourcesDirectory)'
+    - task: DotNetCoreCLI@2
+      displayName: Restore packages 
+      inputs:
+        projects: '**/*.csproj'
+        command: 'restore'
+    - task: DotNetCoreCLI@2
+      displayName: Build projects 
+      inputs:
+        projects: '**/*.csproj'
+        command: 'build'
+        arguments: '--configuration $(buildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: Publish application
+      inputs:
+        command: publish
+        publishWebProjects: True
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: True
+    - task: PublishPipelineArtifact@1
+      displayName: Publish backend artifact
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)' 
+        artifactName: 'backend'
+- stage: deployment
+  displayName: Deployment
+  dependsOn: artifacts
+  jobs:
+  - deployment: systemDeployment
+    displayName: System deployment
+    environment: production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            displayName: Download backend artifact
+            artifact: backend
+          
+
