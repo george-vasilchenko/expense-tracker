@@ -57,5 +57,13 @@ stages:
           - download: current
             displayName: Download backend artifact
             artifact: backend
-          
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'Visual Studio Enterprise(5b6e962c-950e-40cd-8b6b-c18d304dbafd)'
+              appType: 'webAppLinux'
+              WebAppName: 'expense-tracker-webapi'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              RuntimeStack: 'DOTNETCORE|7.0'
+              AppSettings: '-abc def'
 
