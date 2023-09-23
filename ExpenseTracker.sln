@@ -16,6 +16,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{73
 	ProjectSection(SolutionItems) = preProject
 		Directory.Packages.props = Directory.Packages.props
 		Directory.Build.props = Directory.Build.props
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{8CAA90CB-7590-4E18-81CC-8D61E072A1D1}"
+	ProjectSection(SolutionItems) = preProject
+		pipelines\azure-pipelines.yml = pipelines\azure-pipelines.yml
+		pipelines\main.bicep = pipelines\main.bicep
 	EndProjectSection
 EndProject
 Global
