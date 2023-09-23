@@ -13,7 +13,7 @@ public static class Program
 
         SubscriptionPlugin.AddServices(
             builder,
-            builder.Configuration.GetConnectionString("SUBSCRIPTIONS_DB_CONTEXT_CONNECTION_STRING")!);
+            builder.Configuration["SUBSCRIPTIONS_DB_CONTEXT_CONNECTION_STRING"]!);
 
         var app = builder.Build();
         app.UseSwagger();

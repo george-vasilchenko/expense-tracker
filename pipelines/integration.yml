@@ -5,9 +5,9 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'Source Line(f2e5a83a-99f6-434f-917a-28f6dd1a24c9)'
-    scriptType: 'ps'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az deployment sub create --template-file ./pipelines/resource-group.bicep --parameters name=et-default-rg location=westeurope'
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: "Source Line(f2e5a83a-99f6-434f-917a-28f6dd1a24c9)"
+      scriptType: "ps"
+      scriptLocation: "inlineScript"
+      inlineScript: "az deployment sub create --template-file ./pipelines/main.bicep --parameters name=et-default-rg location=westeurope"
