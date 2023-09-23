@@ -64,6 +64,6 @@ stages:
               azureSubscription: 'Visual Studio Enterprise(5b6e962c-950e-40cd-8b6b-c18d304dbafd)'
               appType: 'webAppLinux'
               WebAppName: 'expense-tracker-webapi'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/backend/ExpenseTracker.WebApi.zip'
+              packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
               RuntimeStack: 'DOTNETCORE|7.0'
               AppSettings: '-SUBSCRIPTIONS_DB_CONTEXT_CONNECTION_STRING Server=tcp:gp-sqlserver.database.windows.net,1433;Initial Catalog=ExpenseTracker.Subscription;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";'
